@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserModel {
   final String name;
 
-  // String? image;
+  String? image;
   final String id;
   final String email;
 
@@ -11,7 +11,7 @@ class UserModel {
     required this.name,
     required this.id,
     required this.email,
-    // this.image,
+    this.image,
   });
 
   Map<String, dynamic> toMap() {
@@ -19,7 +19,7 @@ class UserModel {
       'name': name,
       'id': id,
       'email': email,
-      // 'image': image,
+      'image': image,
     };
   }
 
@@ -27,7 +27,11 @@ class UserModel {
       DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data();
     return UserModel(
-        name: data?['name'] ?? 'no name', id: doc.id, email: data?['email']);
+      name: data?['name'] ?? 'no name',
+      id: doc.id,
+      email: data?['email'],
+      image: data?['image'],
+    );
   }
 // UserModel.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> doc)
 //     : id = doc.id,

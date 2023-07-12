@@ -29,8 +29,9 @@ class _AccountScreenState extends State<AccountScreen> {
       _user = user;
     });
   }
+
   Widget build(BuildContext context) {
-    AppProvider appProvider = Provider.of<AppProvider>(context,listen: false);
+    AppProvider appProvider = Provider.of<AppProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -50,22 +51,27 @@ class _AccountScreenState extends State<AccountScreen> {
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.person_outline_rounded,
-                  size: 150,
-                ),
-                 Text(
-                   // appProvider.getUserInformation.name==null?"no name":appProvider.getUserInformation.name,
-                   _user != null?_user!.name:"no name",
+                _user!.image == null
+                    ? Icon(
+                        Icons.person_outline_rounded,
+                        size: 150,
+                      )
+                    : CircleAvatar(
+                        backgroundImage: NetworkImage(_user!.image.toString()),
+                        radius: 60,
+                      ),
+                Text(
+                  // appProvider.getUserInformation.name==null?"no name":appProvider.getUserInformation.name,
+                  _user != null ? _user!.name : "no name",
 
-                   // "sushant21kumar",
+                  // "sushant21kumar",
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                 Text(
-                   _user != null?_user!.email:  "no email",
+                Text(
+                  _user != null ? _user!.email : "no email",
                 ),
                 const SizedBox(
                   height: 12.0,
@@ -93,7 +99,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                   ListTile(
                     onTap: () {},
-                    leading: const Icon(Icons.info_outline_rounded ),
+                    leading: const Icon(Icons.info_outline_rounded),
                     title: const Text("About us"),
                   ),
                   ListTile(
@@ -104,10 +110,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   ListTile(
                     onTap: () {
                       FirebaseAuthHelper.instance.signOut();
-                      setState(() {
-
-                      });
-
+                      setState(() {});
                     },
                     leading: const Icon(Icons.exit_to_app),
                     title: const Text("Log out"),
