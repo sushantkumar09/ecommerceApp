@@ -1,5 +1,9 @@
+import 'package:ecommerce/firebase_helper/firebase_auth_helper.dart';
+import 'package:ecommerce/models/user_model.dart';
+import 'package:ecommerce/provider/app_provider.dart';
 import 'package:ecommerce/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({Key? key}) : super(key: key);
@@ -9,8 +13,25 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+  UserService _userService = UserService();
+  UserModel? _user;
+
   @override
+  void initState() {
+    // TODO: implement initState
+    fetchUserInformation();
+    super.initState();
+  }
+
+  void fetchUserInformation() async {
+    UserModel? user = await _userService.getUserInformation();
+    setState(() {
+      _user = user;
+    });
+  }
   Widget build(BuildContext context) {
+    AppProvider appProvider = Provider.of<AppProvider>(context,listen: false);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -33,15 +54,18 @@ class _AccountScreenState extends State<AccountScreen> {
                   Icons.person_outline_rounded,
                   size: 150,
                 ),
-                const Text(
-                  "Sushant Kumar",
+                 Text(
+                   // appProvider.getUserInformation.name==null?"no name":appProvider.getUserInformation.name,
+                   _user != null?_user!.name:"no name",
+
+                   // "sushant21kumar",
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const Text(
-                  "sushant21kumar",
+                 Text(
+                   _user != null?_user!.email:  "no email",
                 ),
                 const SizedBox(
                   height: 12.0,
@@ -78,7 +102,13 @@ class _AccountScreenState extends State<AccountScreen> {
                     title: const Text("Support"),
                   ),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      FirebaseAuthHelper.instance.signOut();
+                      setState(() {
+
+                      });
+
+                    },
                     leading: const Icon(Icons.exit_to_app),
                     title: const Text("Log out"),
                   ),

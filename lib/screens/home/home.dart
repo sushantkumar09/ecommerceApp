@@ -2,11 +2,14 @@ import 'package:ecommerce/constants/routes.dart';
 import 'package:ecommerce/firebase_helper/firebase_firestore_helper.dart';
 import 'package:ecommerce/models/category_model.dart';
 import 'package:ecommerce/models/product_model.dart';
+import 'package:ecommerce/models/user_model.dart';
+import 'package:ecommerce/provider/app_provider.dart';
 import 'package:ecommerce/screens/category_view.dart';
 import 'package:ecommerce/screens/product_detail.dart';
 import 'package:ecommerce/widgets/top_titles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -18,15 +21,32 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<CategoryModel> categoriesList = [];
   List<ProductModel> productModelList = [];
+  // UserService _userService = UserService();
+  // UserModel? _user;
+
+
 
   bool isLoading = false;
 
   @override
+
   void initState() {
     // TODO: implement initState
+    // AppProvider appProvider = Provider.of<AppProvider>(context,listen: false);
+    // appProvider.getUserInformation;
+    // fetchUserInformation();
+
     getCategoryList();
     super.initState();
   }
+  // void fetchUserInformation() async {
+  //   UserModel? user = await _userService.getUserInformation();
+  //   setState(() {
+  //     _user = user;
+  //   });
+  // }
+
+
 
   void getCategoryList() async {
     setState(() {
@@ -36,6 +56,10 @@ class _HomeState extends State<Home> {
     categoriesList = await FirebaseFirestoreHelper.instance.getCategories();
     productModelList = await FirebaseFirestoreHelper.instance.getBestProducts();
     // productModelList.shuffle();
+
+
+
+
 
     print(productModelList);
     setState(() {

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/constants/constants.dart';
 import 'package:ecommerce/models/product_model.dart';
+import 'package:ecommerce/models/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../models/category_model.dart';
@@ -56,4 +58,30 @@ Future<List<ProductModel>> getBestProducts() async {
       return [];
     }
   }
+
+  Future<UserModel?> getUserInformation() async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> snapshot =
+      await _db
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
+      if (snapshot.exists) {
+        print("${UserModel.fromDocumentSnapshot(snapshot)} test");
+        return UserModel.fromDocumentSnapshot(snapshot);
+      } else {
+        print("User document does not exist");
+        return null;
+      }
+    } catch (e) {
+      print("Error fetching user information: $e");
+      return null;
+    }
+  }
+
+
+
+
+
 }

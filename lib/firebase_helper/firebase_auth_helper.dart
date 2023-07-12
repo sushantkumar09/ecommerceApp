@@ -1,4 +1,5 @@
 import 'package:ecommerce/constants/constants.dart';
+import 'package:ecommerce/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -51,10 +52,13 @@ class FirebaseAuthHelper {
     }
   }
   Future<bool> signUp(
-      String email, String password, BuildContext context) async {
+     String name, String email, String password, BuildContext context) async {
     try {
       showLoaderDialog(context);
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential =  await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserModel userModel = UserModel(name: name, id: userCredential.user!.uid, email: email,);
+      // image: null);
+      _firestore.collection('users').doc(userModel.id).set(userModel.toMap());
       Navigator.of(context,rootNavigator: true).pop();
       return true;
     } on FirebaseAuthException catch (error) {
@@ -63,5 +67,10 @@ class FirebaseAuthHelper {
       return false;
     }
   }
+  void signOut()async{
+    await _auth.signOut();
+  }
+
+
 
 }

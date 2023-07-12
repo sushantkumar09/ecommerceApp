@@ -1,7 +1,7 @@
 import 'package:ecommerce/constants/constants.dart';
 import 'package:ecommerce/constants/routes.dart';
 import 'package:ecommerce/firebase_helper/firebase_auth_helper.dart';
-import 'package:ecommerce/screens/auth_ui/login/login.dart';
+import 'package:ecommerce/screens/custom_bottom_bar.dart';
 import 'package:ecommerce/screens/home/home.dart';
 import 'package:ecommerce/widgets/primary_button.dart';
 import 'package:ecommerce/widgets/top_titles.dart';
@@ -33,7 +33,8 @@ class _SignUpState extends State<SignUp> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const TopTitles(
-                  title: "Create Account", subtitle: "Welcome to Ecommerce App"),
+                  title: "Create Account",
+                  subtitle: "Welcome to Ecommerce App"),
               const SizedBox(
                 height: 12,
               ),
@@ -93,20 +94,20 @@ class _SignUpState extends State<SignUp> {
               const SizedBox(
                 height: 12,
               ),
-              PrimaryButton(onPressed: ()async {
-                bool isValidate =
-                signUpVaildation(email.text, password.text,name.text,phone.text);
-                // debugPrint(email.text);
-                if (isValidate) {
-                  bool isLogined = await FirebaseAuthHelper.instance
-                      .signUp(email.text, password.text, context);
-                  if (isLogined) {
-                    Routes.instance.pushAndRemoveUntil(Home(), context);
-                  }
-                }
-
-
-                }, title: "Create Account"),
+              PrimaryButton(
+                  onPressed: () async {
+                    bool isValidate = signUpVaildation(
+                        email.text, password.text, name.text, phone.text);
+                    // debugPrint(email.text);
+                    if (isValidate) {
+                      bool isLogined = await FirebaseAuthHelper.instance.signUp(
+                          name.text, email.text, password.text, context);
+                      if (isLogined) {
+                        Routes.instance.pushAndRemoveUntil(CustomBottomBar(), context);
+                      }
+                    }
+                  },
+                  title: "Create Account"),
               const SizedBox(
                 height: 20,
               ),
