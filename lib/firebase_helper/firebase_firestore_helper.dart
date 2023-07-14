@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/constants/constants.dart';
+import 'package:ecommerce/models/order_model.dart';
 import 'package:ecommerce/models/product_model.dart';
 import 'package:ecommerce/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -75,7 +76,7 @@ class FirebaseFirestoreHelper {
   }
 
   Future<bool> uploadOrderedProductFirebase(
-      List<ProductModel> list, BuildContext context,String payment) async {
+      List<ProductModel> list, BuildContext context, String payment) async {
     try {
       showLoaderDialog(context);
       double totalPrice = 0;
@@ -87,11 +88,19 @@ class FirebaseFirestoreHelper {
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection("orders")
           .doc();
+      DocumentReference admin = _db.collection("orders").doc();
+      admin.set({
+        "products": list.map((e) => e.toJson()),
+        "status": "Pending",
+        "totalPrice": totalPrice,
+        "payment": payment,
+      });
+
       documentReference.set({
         "products": list.map((e) => e.toJson()),
-        "status":"Pending",
+        "status": "Pending",
         "totalPrice": totalPrice,
-        "payment":payment,
+        "payment": payment,
       });
       Navigator.of(context, rootNavigator: true).pop();
       showMessage("order placed successfully");
@@ -103,4 +112,60 @@ class FirebaseFirestoreHelper {
       return false;
     }
   }
+
+  //get order list
+  Future<List<OrderModel>> getUserOrder() async {
+    try {
+      final QuerySnapshot<Map<String, dynamic>> ordersSnapshot =
+          await FirebaseFirestore.instance
+              .collection('usersOrders')
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .collection('orders')
+              .get();
+      List<OrderModel> orderList = [];
+
+      // print(ordersSnapshot.docs[0]['products'][0]['description']);
+      for (int i = 0; i < ordersSnapshot.docs.length; i++) {
+        String oId = ordersSnapshot.docs[i]['orderId'];
+        String payM = ordersSnapshot.docs[i]['payment'];
+        String stats = ordersSnapshot.docs[i]['status'];
+        double totalBill = ordersSnapshot.docs[i]['totalPrice'];
+        List<ProductModel> productsList = [];
+        for (int j = 0; j < ordersSnapshot.docs[i]['products'].length; j++) {
+          ProductModel productModel = ProductModel(
+              image: ordersSnapshot.docs[i]['products'][j]['image'],
+              id: ordersSnapshot.docs[i]['products'][j]['id'],
+              pname: ordersSnapshot.docs[i]['products'][j]['pname'],
+              prod_name: ordersSnapshot.docs[i]['products'][j]['prod_name'],
+              price: ordersSnapshot.docs[i]['products'][j]['price'],
+              description: ordersSnapshot.docs[i]['products'][j]['description'],
+              isFavourite: ordersSnapshot.docs[i]['products'][j]
+                  ['isFavourite']);
+          productsList.add(productModel);
+        }
+        // List<ProductModel> prod = ordersSnapshot.docs[i]['products'];
+        OrderModel order = OrderModel(
+            orderId: oId,
+            payment: payM,
+            status: stats,
+            totalPrice: totalBill,
+            products: productsList);
+        orderList.add(order);
+      }
+
+      print(orderList.length);
+      return orderList;
+    } catch (e) {
+      print(e.toString());
+      // print("catch block me ");
+
+      showMessage(e.toString());
+
+      return [];
+    }
+  }
 }
+
+//return snapshot.docs
+//           .map((e) => ProductModel.fromDocumentSnapshot(e))
+//           .toList();

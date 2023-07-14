@@ -5,9 +5,7 @@ import 'package:ecommerce/provider/app_provider.dart';
 import 'package:ecommerce/screens/edit_profile/edit_profile.dart';
 import 'package:ecommerce/screens/favourite_screen/favourite_screeen.dart';
 import 'package:ecommerce/screens/home/change_password.dart';
-import 'package:ecommerce/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({Key? key}) : super(key: key);
@@ -60,13 +58,10 @@ class _AccountScreenState extends State<AccountScreen> {
               if (value == 'editProfile') {
                 Routes.instance.push(EditProfilePage(), context);
                 print(_user!.name);
-
               }
             },
           ),
         ],
-
-
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -121,8 +116,8 @@ class _AccountScreenState extends State<AccountScreen> {
                     title: const Text("Your order"),
                   ),
                   ListTile(
-                    onTap: () {  Routes.instance.push(FavouriteScreen(), context);
-
+                    onTap: () {
+                      Routes.instance.push(FavouriteScreen(), context);
                     },
                     leading: const Icon(Icons.favorite_outline),
                     title: const Text("Favourite"),
