@@ -2,7 +2,7 @@ import 'package:ecommerce/constants/routes.dart';
 import 'package:ecommerce/firebase_helper/firebase_firestore_helper.dart';
 import 'package:ecommerce/models/category_model.dart';
 import 'package:ecommerce/models/product_model.dart';
-import 'package:ecommerce/screens/product_detail.dart';
+import 'package:ecommerce/screens/product_detail/product_detail.dart';
 import 'package:flutter/material.dart';
 
 class CategoryView extends StatefulWidget {

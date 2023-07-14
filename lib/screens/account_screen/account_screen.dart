@@ -3,6 +3,7 @@ import 'package:ecommerce/firebase_helper/firebase_auth_helper.dart';
 import 'package:ecommerce/models/user_model.dart';
 import 'package:ecommerce/provider/app_provider.dart';
 import 'package:ecommerce/screens/edit_profile/edit_profile.dart';
+import 'package:ecommerce/screens/favourite_screen/favourite_screeen.dart';
 import 'package:ecommerce/screens/home/change_password.dart';
 import 'package:ecommerce/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
@@ -120,7 +121,9 @@ class _AccountScreenState extends State<AccountScreen> {
                     title: const Text("Your order"),
                   ),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {  Routes.instance.push(FavouriteScreen(), context);
+
+                    },
                     leading: const Icon(Icons.favorite_outline),
                     title: const Text("Favourite"),
                   ),

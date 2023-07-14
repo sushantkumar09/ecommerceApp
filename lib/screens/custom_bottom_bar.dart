@@ -1,7 +1,8 @@
 
-import 'package:ecommerce/screens/account_screen.dart';
+import 'package:ecommerce/screens/account_screen/account_screen.dart';
 import 'package:ecommerce/screens/cart_screen/cart_screen.dart';
 import 'package:ecommerce/screens/favourite_screen/favourite_screeen.dart';
+import 'package:ecommerce/screens/order_screen/order_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   List<Widget> _buildScreens() => [
     const Home(),
     const CartScreen(),
-    const FavouriteScreen(),
+    const  OrdeScreen(),
     // const FavouriteScreen(),
 
     // const OrderScreen(),
@@ -48,7 +49,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
     ),
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.circle_rounded),
-      inactiveIcon: const Icon(Icons.favorite),
+      inactiveIcon: const Icon(Icons.circle_outlined),
       title: "Orders",
       activeColorPrimary: Colors.white,
       inactiveColorPrimary: Colors.white,
