@@ -3,6 +3,7 @@ import 'package:ecommerce/firebase_helper/firebase_auth_helper.dart';
 import 'package:ecommerce/models/user_model.dart';
 import 'package:ecommerce/provider/app_provider.dart';
 import 'package:ecommerce/screens/edit_profile/edit_profile.dart';
+import 'package:ecommerce/screens/home/change_password.dart';
 import 'package:ecommerce/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -132,6 +133,13 @@ class _AccountScreenState extends State<AccountScreen> {
                     onTap: () {},
                     leading: const Icon(Icons.contact_support_outlined),
                     title: const Text("Support"),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Routes.instance.push(ChangePassword(), context);
+                    },
+                    leading: const Icon(Icons.change_circle_outlined),
+                    title: const Text("Change password"),
                   ),
                   ListTile(
                     onTap: () {
