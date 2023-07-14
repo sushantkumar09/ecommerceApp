@@ -33,22 +33,17 @@ class UserModel {
       image: data?['image'],
     );
   }
-// UserModel.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> doc)
-//     : id = doc.id,
-//       name = doc.data()?['name'] ?? 'no name',
-//       email = doc.data()?['email'];
-//       // image = doc.data()?['image'];
 
-// UserModel copyWith({
-//   String? user_name,
-//   // image,
-// }) =>
-//     UserModel(
-//       name: name ?? this.name,
-//       id: id,
-//       email: email,
-//       // image: image ?? this.image,
-//     );
+  UserModel copyWith({
+    String? name,
+    image,
+  }) =>
+      UserModel(
+        id:id,
+        name: name ?? this.name,
+        email: email,
+        image: image ?? this.image
+      );
 }
 //
 // class CategoryModel {

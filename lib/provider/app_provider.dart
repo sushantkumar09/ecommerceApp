@@ -1,17 +1,19 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce/firebase_helper/firebase_firestore_helper.dart';
+import 'package:ecommerce/constants/constants.dart';
+import 'package:ecommerce/firebase_helper/firebase_storage_helper.dart';
 import 'package:ecommerce/models/product_model.dart';
 import 'package:ecommerce/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/cupertino.dart';
 
 class AppProvider with ChangeNotifier {
   //for cart
   final List<ProductModel> _cartProductList = [];
-  // UserModel ?_userModel;
-  // UserModel get getUserInformation => _userModel!;
+  UserModel? _userModel;
 
+  UserModel get getUserInformation => _userModel!;
 
   void addCartProduct(ProductModel productModel) {
     _cartProductList.add(productModel);
@@ -22,6 +24,7 @@ class AppProvider with ChangeNotifier {
     _cartProductList.remove(productModel);
     notifyListeners();
   }
+
   List<ProductModel> get getCartProductList => _cartProductList;
 
   //for favourite
@@ -37,7 +40,8 @@ class AppProvider with ChangeNotifier {
     _favouriteProductList.remove(productModel);
     notifyListeners();
   }
-  List<ProductModel> get getFavouriteProductList =>  _favouriteProductList;
+
+  List<ProductModel> get getFavouriteProductList => _favouriteProductList;
 
   // user information
 
@@ -46,9 +50,29 @@ class AppProvider with ChangeNotifier {
   //  notifyListeners();
   //
   // }
+  void updateUserInfoFirebase(
+      BuildContext context, UserModel userModel, File? file) async {
+    showLoaderDialog(context);
+    if (file == null) {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(_userModel!.id)
+          .set(userModel.toMap());
+      notifyListeners();
+      Navigator.of(context).pop();
+    } else {
+      String imageUrl =
+          await FirebaseStorageHelper.instance.uploadUserImage(file);
+      _userModel = userModel.copyWith(image: imageUrl);
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(_userModel!.id)
+          .set(_userModel!.toMap());
+      Navigator.of(context).pop();
+      notifyListeners();
+    }
 
-
-
+  }
 }
 
 class UserService {
@@ -59,7 +83,7 @@ class UserService {
       String uid = FirebaseAuth.instance.currentUser!.uid;
 
       DocumentSnapshot<Map<String, dynamic>> snapshot =
-      await _firestore.collection('users').doc(uid).get();
+          await _firestore.collection('users').doc(uid).get();
 
       if (snapshot.exists) {
         UserModel user = UserModel.fromDocumentSnapshot(snapshot);
@@ -74,6 +98,3 @@ class UserService {
     }
   }
 }
-
-
-

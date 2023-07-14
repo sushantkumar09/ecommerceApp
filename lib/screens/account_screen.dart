@@ -1,6 +1,8 @@
+import 'package:ecommerce/constants/routes.dart';
 import 'package:ecommerce/firebase_helper/firebase_auth_helper.dart';
 import 'package:ecommerce/models/user_model.dart';
 import 'package:ecommerce/provider/app_provider.dart';
+import 'package:ecommerce/screens/edit_profile/edit_profile.dart';
 import 'package:ecommerce/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +33,7 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   Widget build(BuildContext context) {
-    AppProvider appProvider = Provider.of<AppProvider>(context, listen: false);
+    // AppProvider appProvider = Provider.of<AppProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -42,6 +44,27 @@ class _AccountScreenState extends State<AccountScreen> {
             color: Colors.black,
           ),
         ),
+        actions: [
+          PopupMenuButton<String>(
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem<String>(
+                  value: 'editProfile',
+                  child: Text('Edit Profile'),
+                ),
+              ];
+            },
+            onSelected: (String value) {
+              if (value == 'editProfile') {
+                Routes.instance.push(EditProfilePage(), context);
+                print(_user!.name);
+
+              }
+            },
+          ),
+        ],
+
+
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -52,7 +75,7 @@ class _AccountScreenState extends State<AccountScreen> {
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _user!.image == null
-                    ? Icon(
+                    ? const Icon(
                         Icons.person_outline_rounded,
                         size: 150,
                       )
@@ -65,7 +88,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   _user != null ? _user!.name : "no name",
 
                   // "sushant21kumar",
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
@@ -76,10 +99,13 @@ class _AccountScreenState extends State<AccountScreen> {
                 const SizedBox(
                   height: 12.0,
                 ),
-                SizedBox(
-                  width: 150,
-                  child: PrimaryButton(onPressed: () {}, title: "Edit Profile"),
-                )
+                // SizedBox(
+                //   width: 150,
+                //   child: PrimaryButton(onPressed: () {
+                //     Routes.instance.push(EditProfilePage(), context);
+                //     print(_user!.name);
+                //   }, title: "Edit Profile"),
+                // )
               ],
             ),
           ),
