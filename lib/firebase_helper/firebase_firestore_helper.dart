@@ -15,7 +15,7 @@ class FirebaseFirestoreHelper {
 
   Future<List<CategoryModel>> getCategories() async {
     QuerySnapshot<Map<String, dynamic>> snapshot =
-    await _db.collection("categories").get();
+        await _db.collection("categories").get();
     debugPrint("${snapshot.docs} best category Products");
 
     return snapshot.docs
@@ -23,26 +23,23 @@ class FirebaseFirestoreHelper {
         .toList();
   }
 
-
-Future<List<ProductModel>> getBestProducts() async {
-    try{
-  QuerySnapshot<Map<String, dynamic>> snapshot =
-  await _db.collectionGroup("product").get();
-  print("${snapshot.docs} best Products");
-  return snapshot.docs
-      .map((docSnapshot) => ProductModel.fromDocumentSnapshot(docSnapshot))
-      .toList();
-}catch(e){
+  Future<List<ProductModel>> getBestProducts() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> snapshot =
+          await _db.collectionGroup("product").get();
+      print("${snapshot.docs} best Products");
+      return snapshot.docs
+          .map((docSnapshot) => ProductModel.fromDocumentSnapshot(docSnapshot))
+          .toList();
+    } catch (e) {
       showMessage((e.toString()));
-      return[];
+      return [];
     }
-
-}
+  }
 
   Future<List<ProductModel>> getCategoryViewProduct(String id) async {
     try {
-      QuerySnapshot<Map<String, dynamic>> snapshot =
-      await _db
+      QuerySnapshot<Map<String, dynamic>> snapshot = await _db
           .collection("categories")
           .doc(id)
           .collection("product")
@@ -51,8 +48,6 @@ Future<List<ProductModel>> getBestProducts() async {
       return snapshot.docs
           .map((e) => ProductModel.fromDocumentSnapshot(e))
           .toList();
-
-
     } catch (e) {
       showMessage(e.toString());
       return [];
@@ -61,8 +56,7 @@ Future<List<ProductModel>> getBestProducts() async {
 
   Future<UserModel?> getUserInformation() async {
     try {
-      DocumentSnapshot<Map<String, dynamic>> snapshot =
-      await _db
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await _db
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
@@ -80,8 +74,33 @@ Future<List<ProductModel>> getBestProducts() async {
     }
   }
 
+  Future<bool> uploadOrderedProductFirebase(
+      List<ProductModel> list, BuildContext context,String payment) async {
+    try {
+      showLoaderDialog(context);
+      double totalPrice = 0;
+      for (var element in list) {
+        totalPrice += double.parse(element.price) * element.qty!;
+      }
+      DocumentReference documentReference = _db
+          .collection("usersOrders")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("orders")
+          .doc();
+      documentReference.set({
+        "products": list.map((e) => e.toJson()),
+        "status":"Pending",
+        "totalPrice": totalPrice,
+        "payment":payment,
+      });
+      Navigator.of(context, rootNavigator: true).pop();
+      showMessage("order placed successfully");
 
-
-
-
+      return true;
+    } catch (e) {
+      showMessage(e.toString());
+      Navigator.of(context, rootNavigator: true).pop();
+      return false;
+    }
+  }
 }

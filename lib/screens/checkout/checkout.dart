@@ -1,8 +1,16 @@
+import 'package:ecommerce/constants/routes.dart';
+import 'package:ecommerce/firebase_helper/firebase_firestore_helper.dart';
+import 'package:ecommerce/models/product_model.dart';
+import 'package:ecommerce/provider/app_provider.dart';
+import 'package:ecommerce/screens/custom_bottom_bar.dart';
 import 'package:ecommerce/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Checkout extends StatefulWidget {
-  const Checkout({Key? key}) : super(key: key);
+  final ProductModel singleProduct;
+
+  const Checkout({Key? key, required this.singleProduct}) : super(key: key);
 
   @override
   State<Checkout> createState() => _CheckoutState();
@@ -13,6 +21,7 @@ class _CheckoutState extends State<Checkout> {
 
   @override
   Widget build(BuildContext context) {
+    AppProvider appProvider = Provider.of<AppProvider>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -96,28 +105,42 @@ class _CheckoutState extends State<Checkout> {
               ),
             ),
             const SizedBox(
-              height: 60.0,
+              height: 24.0,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  "Total",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                Text(
-                  "\$150",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                )
-              ],
-            ),
-            PrimaryButton(onPressed: () {}, title: "Checkout")
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: const [
+            //     Text(
+            //       "Total",
+            //       style: TextStyle(
+            //         fontWeight: FontWeight.bold,
+            //         fontSize: 18,
+            //       ),
+            //     ),
+            //     Text(
+            //       "\$150",
+            //       style: TextStyle(
+            //         fontWeight: FontWeight.bold,
+            //         fontSize: 18,
+            //       ),
+            //     )
+            //   ],
+            // ),
+            PrimaryButton(
+                onPressed: () async {
+                  appProvider.getBuyProductsList.clear();
+                  appProvider.addBuyProduct(widget.singleProduct);
+                  bool value = await FirebaseFirestoreHelper.instance
+                      .uploadOrderedProductFirebase(
+                          appProvider.getBuyProductsList, context,groupValue==1?"Cash on delivery":"Paid");
+                  if(value){
+                    Future.delayed(const Duration(seconds: 2),(){
+                      Routes.instance.push(CustomBottomBar(), context);
+                    });
+                  }
+
+                },
+                title: "Continue ")
           ],
         ),
       ),

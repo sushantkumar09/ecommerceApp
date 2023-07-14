@@ -157,7 +157,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                     width: 130,
                     child: ElevatedButton(
                       onPressed: () {
-                        Routes.instance.push(const Checkout(), context);
+                        ProductModel productModel = widget.singleProduct.copyWith(qty: quantity);
+                        Routes.instance.push(Checkout(singleProduct: productModel,), context);
                         // Routes.instance.push(FavouriteScreen(), context);
                       },
                       child:const  Text("BUY"),

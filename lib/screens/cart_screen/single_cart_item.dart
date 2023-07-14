@@ -17,13 +17,12 @@ class SingleCartItem extends StatefulWidget {
 
 class _SingleCartItemState extends State<SingleCartItem> {
   int qty = 1;
+
   @override
   void initState() {
     // TODO: implement initState
-    qty = widget.singleProduct.qty??1;
-    setState(() {
-
-    });
+    qty = widget.singleProduct.qty ?? 1;
+    setState(() {});
     super.initState();
   }
 
@@ -80,9 +79,8 @@ class _SingleCartItemState extends State<SingleCartItem> {
                                           setState(() {
                                             qty--;
                                           });
-                                          //   // appProvider.updateQty(
-                                          //   //     widget.singleProduct, qty);
-                                          // }
+                                          appProvider.updateQty(
+                                              widget.singleProduct, qty);
                                         }
                                       },
                                       padding: EdgeInsets.zero,
@@ -104,8 +102,8 @@ class _SingleCartItemState extends State<SingleCartItem> {
                                         setState(() {
                                           qty++;
                                         });
-                                        // appProvider.updateQty(
-                                        //     widget.singleProduct, qty);
+                                        appProvider.updateQty(
+                                            widget.singleProduct, qty);
                                       },
                                       padding: EdgeInsets.zero,
                                       child: const CircleAvatar(
@@ -133,9 +131,8 @@ class _SingleCartItemState extends State<SingleCartItem> {
                                         }
                                       },
                                       child: Text(
-
                                         appProvider.getFavouriteProductList
-                                            .contains(widget.singleProduct)
+                                                .contains(widget.singleProduct)
                                             ? "Remove to wishlist"
                                             : "Add to wishlist",
                                         style: const TextStyle(
@@ -161,8 +158,8 @@ class _SingleCartItemState extends State<SingleCartItem> {
                         CupertinoButton(
                             padding: EdgeInsets.zero,
                             onPressed: () {
-
-                              appProvider.removeCartProduct(widget.singleProduct);
+                              appProvider
+                                  .removeCartProduct(widget.singleProduct);
                               showMessage("Removed from cart");
                             },
                             child: const CircleAvatar(

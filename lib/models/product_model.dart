@@ -23,18 +23,28 @@ class ProductModel {
 
   int? qty;
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'image': image,
-      'pname': pname,
-      'prod_name': prod_name,
-      'price': price,
-      'qty':qty,
-      'description': description,
-      'isFavourite': isFavourite,
-    };
-  }
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     'id': id,
+  //     'image': image,
+  //     'pname': pname,
+  //     'prod_name': prod_name,
+  //     'price': price,
+  //     'qty':qty,
+  //     'description': description,
+  //     'isFavourite': isFavourite,
+  //   };
+  // }
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    'prod_name': prod_name,
+    "pname": pname,
+    "image": image,
+    "description": description,
+    "isFavourite": isFavourite,
+    "price": price,
+    "qty": qty
+  };
 
   ProductModel.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> doc)
       // : id = doc.id,

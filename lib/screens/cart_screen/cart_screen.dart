@@ -59,7 +59,7 @@ class _CartScreenState extends State<CartScreen> {
                   // if (appProvider.getBuyProductList.isEmpty) {
                   //   showMessage("Cart is empty");
                   // } else {
-                  Routes.instance.push(Checkout(), context);
+                  // Routes.instance.push(Checkout(), context);
                 },
               ),
             ],

@@ -9,6 +9,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 class AppProvider with ChangeNotifier {
+  final List<ProductModel> _buy_product = [];
+
   //for cart
   final List<ProductModel> _cartProductList = [];
   UserModel? _userModel;
@@ -71,21 +73,32 @@ class AppProvider with ChangeNotifier {
       Navigator.of(context).pop();
       notifyListeners();
     }
-
   }
 
   //// total price
-  double totalPrice(){
+  double totalPrice() {
     double totalPrice = 0.0;
 
-    for(var element in _cartProductList){
-      totalPrice+=double.parse(element.price) * element.qty!;
+    for (var element in _cartProductList) {
+      totalPrice += double.parse(element.price) * element.qty!;
     }
     return totalPrice;
-
-
   }
 
+  void updateQty(ProductModel productModel, int qty) {
+    int index = _cartProductList.indexOf(productModel);
+    _cartProductList[index].qty = qty;
+    notifyListeners();
+  }
+
+  /// buy product
+  ///
+  void addBuyProduct(ProductModel model){
+    _buy_product.add(model);
+    notifyListeners();
+
+  }
+  List<ProductModel>get getBuyProductsList => _buy_product;
 }
 
 class UserService {
