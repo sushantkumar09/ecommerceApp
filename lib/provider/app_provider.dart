@@ -73,6 +73,19 @@ class AppProvider with ChangeNotifier {
     }
 
   }
+
+  //// total price
+  double totalPrice(){
+    double totalPrice = 0.0;
+
+    for(var element in _cartProductList){
+      totalPrice+=double.parse(element.price) * element.qty!;
+    }
+    return totalPrice;
+
+
+  }
+
 }
 
 class UserService {

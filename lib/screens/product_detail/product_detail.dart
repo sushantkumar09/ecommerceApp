@@ -4,6 +4,7 @@ import 'package:ecommerce/models/product_model.dart';
 import 'package:ecommerce/provider/app_provider.dart';
 import 'package:ecommerce/screens/account_screen/account_screen.dart';
 import 'package:ecommerce/screens/cart_screen/cart_screen.dart';
+import 'package:ecommerce/screens/checkout/checkout.dart';
 import 'package:ecommerce/screens/favourite_screen/favourite_screeen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -156,7 +157,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     width: 130,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Routes.instance.push(AccountScreen(), context);
+                        Routes.instance.push(const Checkout(), context);
                         // Routes.instance.push(FavouriteScreen(), context);
                       },
                       child:const  Text("BUY"),
