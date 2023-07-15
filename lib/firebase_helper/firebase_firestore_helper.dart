@@ -94,6 +94,7 @@ class FirebaseFirestoreHelper {
         "status": "Pending",
         "totalPrice": totalPrice,
         "payment": payment,
+        "orderId": documentReference.id,
       });
 
       documentReference.set({
@@ -101,6 +102,7 @@ class FirebaseFirestoreHelper {
         "status": "Pending",
         "totalPrice": totalPrice,
         "payment": payment,
+        "orderId": documentReference.id,
       });
       Navigator.of(context, rootNavigator: true).pop();
       showMessage("order placed successfully");

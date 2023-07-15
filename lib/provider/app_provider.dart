@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 class AppProvider with ChangeNotifier {
-  final List<ProductModel> _buy_product = [];
+  final List<ProductModel> _buyProductList = [];
 
   //for cart
   final List<ProductModel> _cartProductList = [];
@@ -93,12 +93,27 @@ class AppProvider with ChangeNotifier {
 
   /// buy product
   ///
-  void addBuyProduct(ProductModel model){
-    _buy_product.add(model);
+  void addBuyProduct(ProductModel model) {
+    _buyProductList.add(model);
     notifyListeners();
-
   }
-  List<ProductModel>get getBuyProductsList => _buy_product;
+
+  void addBuyProductCartList() {
+    _buyProductList.addAll(_cartProductList);
+    notifyListeners();
+  }
+
+  void clearCart() {
+    _cartProductList.clear();
+    notifyListeners();
+  }
+
+  void clearBuyProduct() {
+    _buyProductList.clear();
+    notifyListeners();
+  }
+
+  List<ProductModel> get getBuyProductsList => _buyProductList;
 }
 
 class UserService {

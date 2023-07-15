@@ -1,7 +1,8 @@
+import 'package:ecommerce/constants/constants.dart';
 import 'package:ecommerce/constants/routes.dart';
 import 'package:ecommerce/provider/app_provider.dart';
+import 'package:ecommerce/screens/cart_item_checkout/cart_item_checkout.dart';
 import 'package:ecommerce/screens/cart_screen/single_cart_item.dart';
-import 'package:ecommerce/screens/checkout/checkout.dart';
 import 'package:ecommerce/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -53,13 +54,15 @@ class _CartScreenState extends State<CartScreen> {
               PrimaryButton(
                 title: "Checkout",
                 onPressed: () {
-                  // appProvider.clearBuyProduct();
-                  // appProvider.addBuyProductCartList();
-                  // appProvider.clearCart();
-                  // if (appProvider.getBuyProductList.isEmpty) {
-                  //   showMessage("Cart is empty");
-                  // } else {
-                  // Routes.instance.push(Checkout(), context);
+                  appProvider.clearBuyProduct();
+                  appProvider.addBuyProductCartList();
+                  appProvider.clearCart();
+
+                  if (appProvider.getBuyProductsList.isEmpty) {
+                    showMessage("Cart is empty");
+                  } else {
+                    Routes.instance.push(CartItemCheckout(), context);
+                  }
                 },
               ),
             ],

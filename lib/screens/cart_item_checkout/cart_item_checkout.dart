@@ -1,22 +1,19 @@
 import 'package:ecommerce/constants/routes.dart';
 import 'package:ecommerce/firebase_helper/firebase_firestore_helper.dart';
-import 'package:ecommerce/models/product_model.dart';
 import 'package:ecommerce/provider/app_provider.dart';
 import 'package:ecommerce/screens/custom_bottom_bar.dart';
 import 'package:ecommerce/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Checkout extends StatefulWidget {
-  final ProductModel singleProduct;
-
-  const Checkout({Key? key, required this.singleProduct}) : super(key: key);
+class CartItemCheckout extends StatefulWidget {
+  const CartItemCheckout({Key? key}) : super(key: key);
 
   @override
-  State<Checkout> createState() => _CheckoutState();
+  State<CartItemCheckout> createState() => _CartItemCheckoutState();
 }
 
-class _CheckoutState extends State<Checkout> {
+class _CartItemCheckoutState extends State<CartItemCheckout> {
   int groupValue = 1;
 
   @override
@@ -107,20 +104,19 @@ class _CheckoutState extends State<Checkout> {
             const SizedBox(
               height: 24.0,
             ),
-
             PrimaryButton(
                 onPressed: () async {
-                  appProvider.clearBuyProduct();
-                  appProvider.addBuyProduct(widget.singleProduct);
                   bool value = await FirebaseFirestoreHelper.instance
                       .uploadOrderedProductFirebase(
-                          appProvider.getBuyProductsList, context,groupValue==1?"Cash on delivery":"Paid");
-                  if(value){
-                    Future.delayed(const Duration(seconds: 2),(){
+                          appProvider.getBuyProductsList,
+                          context,
+                          groupValue == 1 ? "Cash on delivery" : "Paid");
+                  appProvider.clearBuyProduct();
+                  if (value) {
+                    Future.delayed(const Duration(seconds: 2), () {
                       Routes.instance.push(CustomBottomBar(), context);
                     });
                   }
-
                 },
                 title: "Continue ")
           ],
