@@ -2,9 +2,12 @@ import 'package:ecommerce/constants/routes.dart';
 import 'package:ecommerce/firebase_helper/firebase_auth_helper.dart';
 import 'package:ecommerce/models/user_model.dart';
 import 'package:ecommerce/provider/app_provider.dart';
+import 'package:ecommerce/screens/about_us/about_us.dart';
 import 'package:ecommerce/screens/edit_profile/edit_profile.dart';
 import 'package:ecommerce/screens/favourite_screen/favourite_screeen.dart';
 import 'package:ecommerce/screens/home/change_password.dart';
+import 'package:ecommerce/screens/order_screen/order_screen.dart';
+import 'package:ecommerce/screens/support_ui/support_ui.dart';
 import 'package:flutter/material.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -111,7 +114,9 @@ class _AccountScreenState extends State<AccountScreen> {
               child: Column(
                 children: [
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Routes.instance.push(OrdeScreen(), context);
+                    },
                     leading: const Icon(Icons.shopping_bag),
                     title: const Text("Your order"),
                   ),
@@ -123,12 +128,14 @@ class _AccountScreenState extends State<AccountScreen> {
                     title: const Text("Favourite"),
                   ),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Routes.instance.push(AboutPage(), context);
+                    },
                     leading: const Icon(Icons.info_outline_rounded),
                     title: const Text("About us"),
                   ),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {Routes.instance.push(Support(), context);},
                     leading: const Icon(Icons.contact_support_outlined),
                     title: const Text("Support"),
                   ),
