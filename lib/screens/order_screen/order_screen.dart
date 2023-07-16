@@ -19,8 +19,8 @@ class _OrdeScreenState extends State<OrdeScreen> {
             style: TextStyle(color: Colors.black),
           ),
         ),
-        body: FutureBuilder(
-          future: FirebaseFirestoreHelper.instance.getUserOrder(),
+        body:StreamBuilder(
+          stream: Stream.fromFuture( FirebaseFirestoreHelper.instance.getUserOrder()),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
